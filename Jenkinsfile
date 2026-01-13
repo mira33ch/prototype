@@ -44,7 +44,7 @@ pipeline {
 
         stage("Checkout from SCM") {
             steps {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/mira33ch/MyPortfolio'
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/mira33ch/prototype'
             }
         }
 
