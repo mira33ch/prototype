@@ -78,7 +78,7 @@ pipeline {
                 dir('demo1') {
                     script {
                         withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
-                             sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.1.2311:sonar -Dsonar.login=jenkins-sonarqube-token'
+                             sh 'mvn sonar:sonar'
                         }
                     }
                 }
