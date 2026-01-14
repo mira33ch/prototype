@@ -73,12 +73,12 @@ pipeline {
             }
         }
 
- stage('SonarQube Analysis Backend') {
+    stage('SonarQube Analysis Backend') {
             steps {
                 dir('demo1') {
                     script {
                         withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
-                            sh 'mvn sonar:sonar'
+                            sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
                         }
                     }
                 }
