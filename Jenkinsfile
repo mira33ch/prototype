@@ -74,30 +74,29 @@ pipeline {
         }
 
     stage('SonarQube Analysis Backend') {
-    steps {
-        dir('demo1') {
-            script {
-                withSonarQubeEnv('sonarqube-server') {
-                     sh 'mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.1.2311:sonar -Dsonar.host.url=http://localhost:9000'
-
+            steps {
+                dir('demo1') {
+                    script {
+                        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                            sh 'mvn sonar:sonar'
+                        }
+                    }
                 }
             }
         }
-    }
-}
 
-stage('SonarQube Frontend Analysis') {
-    steps {
-        dir('portfolio-frontend') {
-            script {
-                sh 'npm install -g sonar-scanner' // globally install sonar-scanner
-                withSonarQubeEnv('sonarqube-server') {
-                    sh 'sonar-scanner -Dsonar.projectKey=frontend-project-key -Dsonar.sources=src -Dsonar.host.url=http://localhost:9000'
+        stage('SonarQube Frontend Analysis') {
+            steps {
+                dir('portfolio-frontend') {
+                    script {
+                        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                            sh 'npm install sonar-scanner'
+                            sh 'npx sonar-scanner -Dsonar.projectKey=frontend-project-key -Dsonar.sources=src'
+                        }
+                    }
                 }
             }
         }
-    }
-}
 
         stage('Quality Gate') {
             steps {
