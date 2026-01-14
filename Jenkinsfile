@@ -78,7 +78,8 @@ pipeline {
         dir('demo1') {
             script {
                 withSonarQubeEnv('sonarqube-server') {
-                     sh 'mvn clean verify sonar:sonar -Dsonar.host.url=http://localhost:9000'
+                     sh 'mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.1.2311:sonar -Dsonar.host.url=http://localhost:9000'
+
                 }
             }
         }
