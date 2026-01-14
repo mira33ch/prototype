@@ -151,13 +151,7 @@ pipeline {
             }
         }
     }
-    stage('Trigger CD Pipeline') {
-            steps {
-                script {
-                    sh "curl -v -k --user clouduser:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' '9.163.88.247:8080/job/gitops-cdpipeline/buildWithParameters?token=argocd-token'"
-                }
-            }
-        }
+   
     }
 
     post {
