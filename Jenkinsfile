@@ -13,7 +13,7 @@ pipeline {
         APP_NAME = "portfolio-app-cicd-pipeline"
         RELEASE = "1.0.0"
         DOCKER_AUTH = credentials('dockerhub')
-        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
+        IMAGE_NAME = "${DOCKER_AUTH_USR}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
 
