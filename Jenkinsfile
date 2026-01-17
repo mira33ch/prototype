@@ -12,8 +12,7 @@ pipeline {
         MYSQL_PORT = '3306'
         APP_NAME = "portfolio-app-cicd-pipeline"
         RELEASE = "1.0.0"
-        DOCKER_USER = "mariem360"
-        DOCKER_PASS = 'dockerhub'
+        DOCKER_AUTH = credentials('dockerhub')
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
@@ -109,7 +108,7 @@ pipeline {
         stage('Build & Push Docker Images') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_PASS) {
+                    docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
                         def backendImage = docker.build("${IMAGE_NAME}-backend:${IMAGE_TAG}", 'demo1/')
                         backendImage.push()
                         backendImage.push('latest')
