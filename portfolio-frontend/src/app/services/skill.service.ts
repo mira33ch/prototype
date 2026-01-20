@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SkillService {
-  private apiUrl = '/api/portfolio/skill';
+  private apiUrl = '/api/skill';
 
   constructor(private http: HttpClient) {}
 
