@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CourseService {
-  private apiUrl = '/api/portfolio/course';
+  private apiUrl = '/api/course';
 
   constructor(private http: HttpClient) {}
 
