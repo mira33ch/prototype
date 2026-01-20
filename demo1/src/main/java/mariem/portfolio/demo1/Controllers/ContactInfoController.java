@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/contact")
 @Tag(name = "Gestion des informations de contact")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ContactInfoController {
 
     private final IContactInfoService contactService;
