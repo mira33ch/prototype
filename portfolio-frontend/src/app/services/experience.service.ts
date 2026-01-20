@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ExperienceService {
-  private apiUrl = '/api/portfolio/experience';
+  private apiUrl = '/api/experience';
 
   constructor(private http: HttpClient) {}
 
