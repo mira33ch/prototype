@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:8080/portfolio/contact';
+  private apiUrl = '/api/portfolio/contact';
 
   constructor(private http: HttpClient) {}
 
