@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FormationService {
-  private apiUrl = 'http://localhost:8080/portfolio/formation';
+  private apiUrl = '/api/portfolio/formation';
 
   constructor(private http: HttpClient) {}
 
