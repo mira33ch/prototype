@@ -73,18 +73,19 @@ pipeline {
             }
         }
 
-        stage("Test Application") {
-            steps {
-                dir('demo1') {
-                     sh '''
-                       mvn test \
-                         -Dspring.datasource.url=jdbc:mysql://127.0.0.1:3306/Portfolio?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true \
-                         -Dspring.datasource.username=root \
-                         -Dspring.datasource.password=$MYSQL_ROOT_PASSWORD
-                     '''
-                }
-            }
-        }
+       stage("Test Application") {
+  steps {
+    dir('demo1') {
+      sh """
+        mvn -B test \
+          -Dspring.datasource.url=jdbc:mysql://127.0.0.1:3306/${MYSQL_DB}?createDatabaseIfNotExist=true\\&useSSL=false\\&allowPublicKeyRetrieval=true \
+          -Dspring.datasource.username=root \
+          -Dspring.datasource.password=${MYSQL_ROOT_PASSWORD}
+      """
+    }
+  }
+}
+
 
     stage('SonarQube Analysis Backend') {
             steps {
