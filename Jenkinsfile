@@ -22,25 +22,27 @@ pipeline {
     }
 
     stages {
-       stage('Start MySQL (with password)') {
-         steps {
-           sh 'docker rm -f mysql-test || true'
-           sh '''
-            docker run --name mysql-test \
-              -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD \
-              -e MYSQL_DATABASE=$MYSQL_DB \
-              -e MYSQL_USER=$MYSQL_USER \
-              -e MYSQL_PASSWORD=$MYSQL_PASSWORD \
-              -p $MYSQL_PORT:3306 \
-              -d mysql:8.0 \
-              --default-authentication-plugin=mysql_native_password
+      stage('Start MySQL (with password)') {
+      steps {
+        sh 'docker rm -f mysql-test || true'
+        sh """
+          docker run --name mysql-test \
+            -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
+            -e MYSQL_DATABASE=${MYSQL_DB} \
+            -e MYSQL_USER=${MYSQL_USER} \
+            -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
+            -p ${MYSQL_PORT}:3306 \
+            -d mysql:8.0 \
+            --default-authentication-plugin=mysql_native_password
 
-            echo "Waiting for MySQL to start..."
-            sleep 20
-          '''
+          echo "Waiting for MySQL to be ready..."
+          for i in {1..30}; do
+            docker exec mysql-test mysqladmin ping -h 127.0.0.1 -uroot -p${MYSQL_ROOT_PASSWORD} --silent && break
+            sleep 2
+          done
+        """
       }
-   }
-
+    }
 
         stage("Cleanup Workspace") {
             steps {
@@ -76,7 +78,7 @@ pipeline {
                 dir('demo1') {
                      sh '''
                        mvn test \
-                         -Dspring.datasource.url=jdbc:mysql://localhost:3306/Portfolio?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true \
+                         -Dspring.datasource.url=jdbc:mysql://127.0.0.1:3306/Portfolio?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true \
                          -Dspring.datasource.username=root \
                          -Dspring.datasource.password=$MYSQL_ROOT_PASSWORD
                      '''
