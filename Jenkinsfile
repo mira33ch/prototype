@@ -8,8 +8,11 @@ pipeline {
     }
 
     environment {
-        MYSQL_DB = 'database'
+        MYSQL_DB = 'Portfolio'
         MYSQL_PORT = '3306'
+        MYSQL_ROOT_PASSWORD = 'test_pass'
+        MYSQL_USER = 'test'
+        MYSQL_PASSWORD = 'pass'
         APP_NAME = "portfolio-app-cicd-pipeline"
         RELEASE = "1.0.0"
         DOCKER_AUTH = credentials('dockerhub')
@@ -19,22 +22,25 @@ pipeline {
     }
 
     stages {
-        stage('Start MySQL (no password)') {
-            steps {
-                sh 'docker rm -f mysql-test || true'
-                sh '''
-                    docker run --name mysql-test \
-                        -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-                        -e MYSQL_DATABASE=$MYSQL_DB \
-                        -p $MYSQL_PORT:3306 \
-                        -d mysql:8.0 \
-                        --default-authentication-plugin=mysql_native_password
+       stage('Start MySQL (with password)') {
+         steps {
+           sh 'docker rm -f mysql-test || true'
+           sh '''
+            docker run --name mysql-test \
+              -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD \
+              -e MYSQL_DATABASE=$MYSQL_DB \
+              -e MYSQL_USER=$MYSQL_USER \
+              -e MYSQL_PASSWORD=$MYSQL_PASSWORD \
+              -p $MYSQL_PORT:3306 \
+              -d mysql:8.0 \
+              --default-authentication-plugin=mysql_native_password
 
-                    echo "Waiting for MySQL to start..."
-                    sleep 20
-                '''
-            }
-        }
+            echo "Waiting for MySQL to start..."
+            sleep 20
+          '''
+      }
+   }
+
 
         stage("Cleanup Workspace") {
             steps {
